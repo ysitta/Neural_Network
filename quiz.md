@@ -88,13 +88,13 @@ To prepare the data for the training model, we one-hot encode the vectors (`trai
 
 Before we applied the neural network to fashionmnist dataset, we should check the basic knowledge about the neural network by answering these questions below:
 
-2 The below is the correct statements about Neural Networks, *EXCEPT*
+2. The below is the correct statements about Neural Networks, *EXCEPT*
   - [ ] Input layer is the first layer in Neural Network, the number of neurons depends on the predictor variable on the data
   - [ ] The initial weight  for each neuron is defined randomly
   - [ ] Activation functions are not doing any transformation to its previous layer
   - [ ] The neural network is called deep learning when it has more than one hidden layer
 
-3 The neural network model is built to optimize (minimizing) the error, what kind of error in Regression case that we minimized?
+3. The neural network model is built to optimize (minimizing) the error, what kind of error in Regression case that we minimized?
   - [ ] Binary Crossentropy
   - [ ] Mean Absolute Error
   - [ ] Neuron weight
@@ -210,7 +210,7 @@ Note: do not forget to do the explicit coercion `as.factor`.
   - [ ] The more the neuron, the model tends to underfit
   - [ ] The number of neuron in the hidden layer doesn't relate with underfit or overfit
   
-# 4.2 Model Tuning
+## 4.2 Model Tuning
 
 It turns out; our boss wants to get the best model, then he asks you to compare one model to another model (store it under `model_tuning`). Now, let us try to build the `model_tuning` by tuning these while compiling the model :
 - used the sgd as the optimizer with learning rate 0.001
