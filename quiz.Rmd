@@ -1,0 +1,252 @@
+Congratulations! This is the end of Neural Network and our Machine Learning Specializations. The last part of this course is closed by filling this quiz.
+
+To complete this assignment, you need to build your classification model to classify the categories of fashion image using Neural Network algorithms in one of the frameworks that is `Keras` by following these steps:
+
+# 1 Data Preparation
+
+Let us start our neural network experience by preparing the data first.  In this quiz, you will use the `fashionmnist` dataset. The data is stored as a csv file in this repository as fashionmnist folder. Please load the `fashionmnist` data under the `data_input` folder. The `fashionmnist` folder contains train and test set of 10 different categories for 28 x 28 pixel sized fashion images, use the following glossary for your target labels:
+
+```{r}
+categories <- c("T-shirt", "Trouser", "Pullover", "Dress", 
+    "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Boot")
+```
+
+## 1.1 Load the library and data
+
+```{r}
+library(readr)
+library(keras)
+library(caret)
+library(dplyr)
+```
+
+In this phase, please load and investigate our fashionmnist data and store it under `fashion_train` and `fashion_test` object. Please use the `read_csv()` function from the `readr` package to speed up when reading the data.
+
+```{r}
+fashion_train <- read_csv(...)
+fashion_test <- read_csv(...)
+```
+
+Peek a `fashion_train` data by using `head()` function
+
+```{r}
+head(...)
+```
+
+The `fashion_train` data consists of 60000 observations and 785 variables (1 target and 784 predictors). The predictors themselves contain the pixel of the image.
+
+## 1.2 Convert the data to matrix
+
+The data we have loaded above contains the value of pixels stored in **data frame**. Meanwhile, we have to convert the data into the matrix before we modeled the data, hence please convert the data to be matrix format using `data.matrix()` function and store it the `fashion_train` matrix as `train_m` and `fashion_test` matrix as `test_m`
+
+```{r}
+train_m <- data.matrix(...)
+test_m <- data.matrix(...)
+```
+
+## 1.3 Cross Validation
+
+After that, we should separate the predictors and target in our `train_m` and `test_m` data
+```{r}
+# Predictor variables in `train_m`
+train_x <-  
+
+# Predictor variables in `test_m`
+test_x <-
+
+# Target variables in `train_m`
+train_y <-
+
+# Target variables in `test_m`
+test_y <-
+
+```
+
+## 1.4 Prepare training and testing set (change to an array)
+
+Next, for the matrix variables that contain predictor variables, we should convert it to array shape. Please use the `array_reshape(data, dim(data))` to do that
+
+```{r}
+train_x_array <- array_reshape(..., dim(...))
+test_x_array <- array_reshape(..., dim(...))
+```
+
+## 1.5 Features scaling
+
+Then scale the `train_x_array` and `test_x_array` by dividing to 255.
+
+```{r}
+train_x.keras <- train_x_array/...
+test_x.keras <- test_x_array/...
+```
+
+To prepare the data for the training model, we one-hot encode the vectors (`train_y`) into binary class matrices using `to_categorical()` function from `Keras` and stored it as `train_y.keras` object
+
+```{r}
+train_y.keras <- to_categorical(...,10)
+```
+
+# 2 Build Neural Network Model
+
+## 2.1 Build a model base using `keras_model_sequential()`
+
+To organize the layers, we should create a base model, which is a Sequential model. Call a `keras_model_sequential()` function, and please pipe the base model with the model architecture.
+
+## 2.2 Building Architecture (define layers, neurons, and activation function)
+
+To define the architecture for each layer, we will build several models by tuning several parameters. Before building the architecture, we set the initializer to make sure the result will not change.
+
+```{r}
+set.seed(100)
+initializer <- initializer_random_normal(seed = 100)
+```
+
+First, create a model (stored it under `model_init`)by defining these parameters as:
+- the first layer contains 32 nodes, relu activation function, 784 input shape
+- the second layer contains 32 nodes, relu activation function
+- the third layer contains 10 nodes, softmax activation function
+
+```{r}
+model_init <- keras_model_sequential %>% 
+  layer_dense(units = ..., activation = "...", input_shape = c(...),
+              kernel_initializer = initializer, bias_initializer = initializer) %>% 
+  layer_dense(units = ..., activation = "...",
+              kernel_initializer = initializer, bias_initializer = initializer) %>% 
+  layer_dense(units = ..., activation = "...", 
+              kernel_initializer = initializer, bias_initializer = initializer)
+```
+
+Second, create a model (stored it under `model_bigger`)by defining these parameters as:
+- the first layer contains 512 nodes, relu activation function, 784 input shape
+- the second layer contains 512 nodes, relu activation function
+- the third layer contains 10 nodes, softmax activation function
+
+```{r}
+model_bigger <- keras_model_sequential %>% 
+  layer_dense(units = ..., activation = "...", input_shape = c(...),
+              kernel_initializer = initializer, bias_initializer = initializer) %>% 
+  layer_dense(units = ..., activation = "...",
+              kernel_initializer = initializer, bias_initializer = initializer) %>% 
+  layer_dense(units = ..., activation = "...",
+              kernel_initializer = initializer, bias_initializer = initializer)
+```
+
+
+## 2.3 Building Architecture (define cost function and optimizer)
+
+In this step, we still need to do several settings before the `model_init` and `model_bigger` are ready for training. Then, we should compile the model by defining the loss, optimizer type, and evaluation metrics. Please compile the model by setting these parameters:
+- categorical crossentropy as loss function
+- adam as the optimizer with learning rate 0.001
+- used the accuracy as the metrics
+
+```{r}
+model_init %>% 
+  compile(loss = "...", 
+          optimizer = ...(lr = ...), 
+          metrics = "...")
+```
+
+```{r}
+model_bigger %>% 
+  compile(loss = "...", 
+          optimizer = ...(lr = ...), 
+          metrics = "...")
+```
+
+
+## 2.4 Fitting model in the training set (define epoch and batch size)
+
+In this step, we fit our model using `epochs = 10` and `batch_size = 100` for those `model_init` and `model_bigger`. Please save the model in `history_init` and `history_bigger` object.
+
+```{r}
+history_init <- model_init %>%
+  fit(train_x.keras, train_y.keras, epochs = ..., batch_size = ...)
+```
+
+```{r}
+history_bigger <- model_bigger %>% 
+  fit(train_x.keras, train_y.keras, epoch = ..., batch_size = ...)
+```
+
+# 3 Predicting on the testing set
+
+After we built our model, we then predict the testing (`test_x.keras`) data using the model that we have built. Please predict using `predict_classes()` function from `Keras` package and store it under `pred_init` and `pred_bigger`.
+
+```{r}
+pred_init <- keras::predict_classes(object = ..., x= test_x.keras)
+
+pred_bigger <- keras::predict_classes(object = ..., x= test_x.keras)
+```
+
+# 4 Evaluating the neural network model
+
+As the label is still in dbl type, then please decode the label based on its categories.
+
+```{r}
+decode <- function(data){
+  sapply(as.character(data), switch,
+       "0" = "T-Shirt",
+       "1" = "Trouser",
+       "2" = "Pullover",
+       "3" = "Dress",
+       "4" = "Coat",
+       "5" = "Sandal",
+       "6" = "Shirt",
+       "7" = "Sneaker",
+       "8" = "Bag",
+       "9" = "Boot")
+}
+```
+
+Then, decode the `pred_init` and `pred_bigger` before we evaluate the model performance using confusion matrix
+```{r}
+reference <- decode(test_y)
+pred_decode_in <- decode(...)
+pred_decode_big <- decode(...)
+```
+
+## 4.1 Confusion Matrix (classification)
+
+After decoding the target variable, then you can evaluate the model using several metrics, in this quiz, please check the accuracy in the confusion matrix below.
+
+Note: do not forget to do the explicit coercion `as.factor`.
+
+```{r}
+library(caret)
+confusionMatrix(as.factor(...), as.factor(...))
+confusionMatrix(as.factor(...), as.factor(...))
+```
+  
+# 4.2 Model Tuning
+
+It turns out; our boss wants to get the best model, then he asks you to compare one model to another model (store it under `model_tuning`). Now, let us try to build the `model_tuning` by tuning these while compiling the model :
+- used the sgd as the optimizer with learning rate 0.001
+- the rest is the same with `model_init`
+
+```{r}
+model_tuning <- keras_model_sequential() %>% 
+  layer_dense(units = 32, activation = "relu", input_shape = c(784)) %>% 
+  layer_dense(units = 32, activation = "relu") %>% 
+  layer_dense(units = 10, activation = "softmax")
+
+model_tuning %>% 
+  compile(loss = "categorical_crossentropy", 
+          optimizer = ...(lr = 0.001), 
+          metrics = "...")
+
+history_tuning <- model_tuning %>%
+  fit(train_x.keras, train_y.keras, epochs = 10, batch_size = 100)
+```
+
+After tuning the model, please do the predict `test_x.keras` using `model_tuning`.
+
+```{r}
+pred_tuning <- keras::predict_classes(object = ..., x= ...)
+```
+
+Then, decode the `pred_tuning` and check the model performance using `confusionMatrix`.
+
+```{r}
+pred_decode_tun <- decode(...)
+confusionMatrix(as.factor(...), as.factor(reference))
+```
