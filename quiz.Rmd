@@ -107,7 +107,7 @@ First, create a model (stored it under `model_init`)by defining these parameters
 - the third layer contains 10 nodes, softmax activation function
 
 ```{r}
-model_init <- keras_model_sequential %>% 
+model_init <- keras_model_sequential() %>% 
   layer_dense(units = ..., activation = "...", input_shape = c(...),
               kernel_initializer = initializer, bias_initializer = initializer) %>% 
   layer_dense(units = ..., activation = "...",
@@ -122,7 +122,7 @@ Second, create a model (stored it under `model_bigger`)by defining these paramet
 - the third layer contains 10 nodes, softmax activation function
 
 ```{r}
-model_bigger <- keras_model_sequential %>% 
+model_bigger <- keras_model_sequential() %>% 
   layer_dense(units = ..., activation = "...", input_shape = c(...),
               kernel_initializer = initializer, bias_initializer = initializer) %>% 
   layer_dense(units = ..., activation = "...",
