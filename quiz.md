@@ -1,10 +1,10 @@
-Congratulations! This is the end of Neural Network and our Machine Learning Specializations. The last part of this course is closed by filling this quiz.
+Congratulations! This is the end of Neural Network and our Machine Learning Specializations. The last part of this course closed by filling this quiz.
 
-To complete this assignment, you need to build your classification model to classify the categories of fashion image using Neural Network algorithms in one of the frameworks that is `Keras` by following these steps:
+To complete this assignment, you need to build your classification model to classify the categories of fashion image using Neural Network algorithms in one of the frameworks that are `Keras` by following these steps:
 
 # 1 Data Preparation
 
-Let us start our neural network experience by preparing the data first.  In this quiz, you will use the `fashionmnist` dataset. The data is stored as a csv file in this repository as fashionmnist folder. Please load the `fashionmnist` data under the `data_input` folder. The `fashionmnist` folder contains train and test set of 10 different categories for 28 x 28 pixel sized fashion images, use the following glossary for your target labels:
+Let us start our neural network experience by preparing the data first.  In this quiz, you will use the `fashionmnist` dataset. The data is stored as a .csv file in this repository as fashionmnist folder. Please load the `fashionmnist` data under the `data_input` folder. The `fashionmnist` folder contains train and test set of 10 different categories for 28 x 28 pixel sized fashion images, use the following glossary for your target labels:
 
 ```
 categories <- c("T-shirt", "Trouser", "Pullover", "Dress", 
@@ -64,7 +64,7 @@ test_x_array <-
 
 ## 1.5 Features scaling
 
-The next preparation before the data is ready to be modeled feature scaling. Please answer this question first.
+The next preparation before the data is ready to be modeled, is feature scaling. Now, please answer this question first.
 
 1. After the data reshape to an array, you must continue the preprocessed before training the network. If you inspect an arbitrary image in the training set, you will see that the pixel values fall in the range of 0 to 255. Then, what does the array divide by 255 do?
   - [ ] Convert the array between 0 to 255 into 0 to 1
@@ -86,7 +86,7 @@ To prepare the data for the training model, we one-hot encode the vectors (`trai
 
 # 2 Build Neural Network Model
 
-Before we applied the neural network to fashionmnist dataset, we should check the basic knowledge about the neural network by answering these questions below:
+Before we applied the neural network to fashionmnist dataset, we should check the necessary knowledge about the neural network by answering these questions below:
 
 2. The below is the correct statements about Neural Networks, *EXCEPT*
   - [ ] Input layer is the first layer in Neural Network, the number of neurons depends on the predictor variable on the data
@@ -133,7 +133,7 @@ Second, create a model (stored it under `model_bigger`)by defining these paramet
 ## 2.3 Building Architecture (define cost function and optimizer)
 
 In this step, we still need to do several settings before the model is ready for training. Then, we should compile the model by defining the loss, optimizer type, and evaluation metrics. Please compile the model by setting these parameters:
-- categorical crossentropy as loss function
+- categorical cross-entropy as loss function
 - adam as the optimizer with learning rate 0.001
 - used the accuracy as the metrics
 
@@ -208,7 +208,7 @@ Note: do not forget to do the explicit coercion `as.factor`.
 6. From the two confusion matrix, what can we infer?
   - [ ] The more the neuron, the model tends to overfit
   - [ ] The more the neuron, the model tends to underfit
-  - [ ] The number of neuron in the hidden layer doesn't relate with underfit or overfit
+  - [ ] The number of neuron in the hidden layer does not relate with underfit or overfit
   
 ## 4.2 Model Tuning
 
@@ -221,8 +221,8 @@ It turns out; our boss wants to get the best model, then he asks you to compare 
 ```
 
 7. The optimizer used to update the weight to minimize the loss function. What can you conclude from the model_init and model_tuning about the optimizer?
-  - [ ] Optimizer Adam is more powerful than sgd
-  - [ ] Optimizer Sgd is more powerful than adam
+  - [ ] Optimizer Adam is more powerful than Sgd
+  - [ ] Optimizer Sgd is more powerful than Adam
   - [ ] Both of the optimizers do not influence the model performance
   
 8. From the two models above(`model_init`, and `model_tuning`), what is the best model for us to pick?
