@@ -17,7 +17,7 @@ categories <- c("T-shirt", "Trouser", "Pullover", "Dress",
 
 Please load the following package.
 
-```{r}
+```
 library(readr)
 library(keras)
 library(caret)
@@ -202,7 +202,7 @@ history_init <- model_init %>%
   fit(train_x.keras, train_y.keras, epoch = ..., batch_size = ...)
 ```
 
-```{r}
+```
 history_bigger <- model_bigger %>% 
   fit(train_x.keras, train_y.keras, epoch = ..., batch_size = ...)
 ```
@@ -258,7 +258,7 @@ After decoding the target variable, then you can evaluate the model using severa
 
 Note: do not forget to do the explicit coercion `as.factor`.
 
-```{r}
+```
 library(caret)
 confusionMatrix(as.factor(...), as.factor(...))
 confusionMatrix(as.factor(...), as.factor(...))
