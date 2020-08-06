@@ -209,7 +209,7 @@ history_bigger <- model_bigger %>%
 
 ___
 5. In the fitting model above, we set `epochs = 10`, which means ...
-  - [ ] The model does the feed-forward - back-propagation for all batch 10 times
+  - [ ] Number of iteration the model trained with all the data train
   - [ ] The model does the weighting for all batch 10 times
   - [ ] The model divides the batch 10 times
 ___
