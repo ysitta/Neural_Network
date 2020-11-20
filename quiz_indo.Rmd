@@ -1,0 +1,342 @@
+---
+title: "Kuis CIML II"
+author: "Team Algoritma"
+date: "6/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Kuis Neural Network
+
+Kuis ini merupakan bagian dari proses penilaian *Algoritma Academy*. Selamat anda sudah menyelesaikan materi *Neural Network*! Kami akan melakukan penilaian berupa kuis untuk menguji materi yang sudah dipelajari. Pengerjaan Kuis diharapkan dapat dilakukan di dalam kelas, silakan hubungi tim instruktur kami jika Anda melewatkan kesempatan untuk mengambilnya di kelas.
+
+Untuk menyelesaikan kuis ini, anda perlu untuk membuat model klasifikasi untuk mengklafisikasikan kategori dari gambar produk fashion menggunakan algoritma Neural Network menggunakan framework `Keras` dengan langkah - langkah berikut:
+
+# 1. Persiapan Data
+
+Mari kita mulai pengalaman penerapan neural network kita dengan menyiapkan dataset sebagai langkah pertama.  Anda akan menggunakan `fashionmnist` dataset. Data disimpan dalam format csv file di dalam `fashionmnist` folder dari materi kursus dan terdiri dari train and test set dari 10 kategori yang berbeda untuk gambar produk fasion ukuran 28 x 28 pixel. Gunakan daftar istilah berikut untuk melabelkan target anda:
+
+```{r}
+categories <- c("T-shirt", "Trouser", "Pullover", "Dress", 
+    "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Boot")
+```
+
+## 1.1 Muat library dan data
+
+Silakan muat package berikut.
+
+```{r}
+library(readr)
+library(keras)
+library(caret)
+library(dplyr)
+```
+
+Pada tahap ini, silakan muat dan periksa data fashionmnist kita dan simpan data tersebut sebagai `fashion_train` dan `fashion_test`. Silakan gunakan fungsi `read_csv()` dari package `readr` untuk mempercepat pembacaan data.
+
+```{r}
+fashion_train <- read_csv(...)
+fashion_test <- read_csv(...)
+```
+
+Periksa `fashion_train` data dengan menggunakan function `head()`.
+
+```{r}
+# your code here
+```
+
+`fashion_train` data terdiri dari 60000 observations dan 785 variabel (1 target and 784 prediktor). Setiap prediktor merepresentasikan pixel dari gambar.
+
+## 1.2 Konversi data ke dalam matriks
+
+The data contains the value of pixels stored in **data.frame**. However, we have to convert the data into the matrix before we create a model, hence, please convert the data to be matrix format using `data.matrix()` function and store the `fashion_train` matrix as `train_m` and `fashion_test` matrix as `test_m`.
+
+Data berisi nilai pixel yang disimpan dalam data frame. Namun, kita harus mengkonversi data menjadi matriks sebelum kita membuat sebuah model, sehingga, silahkan konversi data menjadi format matrix menggunakan fungsi `data.matrix()`
+
+```{r}
+train_m <- data.matrix(...)
+test_m <- data.matrix(...)
+```
+
+## 1.3 Cross Validation
+
+Setelah itu, kita harus memisahkan prediktor dan target di data `train_m` dan `test_m`
+
+```{r}
+# Predictor variables in `train_m`
+train_x <-  ...
+
+# Predictor variables in `test_m`
+test_x <- ...
+
+# Target variables in `train_m`
+train_y <- ...
+
+# Target variables in `test_m`
+test_y <- ...
+
+```
+
+## 1.4 Persiapkan training dan testing (ubah menjadi array)
+
+Selanjutnya, kita harus mengkonversi prediktor matriks ke dalam bentuk array. Silahkan gunakan `array_reshape(data, dim(data))` untuk mengkonversi data.
+
+```{r}
+train_x_array <- array_reshape(..., dim(...))
+test_x_array <- array_reshape(..., dim(...))
+```
+
+## 1.5 Features scaling
+
+Persiapan selanjutnya sebelum data siap untuk dimodelkan adalah feature scaling. Silahkan jawab pertanyaan di bawah ini terlebih dahulu.
+
+___
+1. Setelah data dibentuk ulang ke dalam array, kamu harus melanjutkan praproses sebelum melatih network. Jika kamu inspeksi sembarang gambar di dalam training, kamu akan melihat bahwa nilai pixel jatuh dalam range 0 sampai 255. Kemudian, apa yang dilakukan array dengan membaginya dengan 255?
+  - [ ] Convert the array between 0 to 255 into 0 to 1
+  - [ ] Reshape the width and height into a single dimension since the data is a 3-d array (images, width, height)
+  - [ ] Normalize the array between 0 to 255 into -1 to 1
+___
+
+Tahap selanjutnya adalah menskalakan nilai array (`train_x_array` dan `test_x_array`) dengan membaginya dengan 255.
+
+```{r}
+train_x.keras <- train_x_array/...
+test_x.keras <- test_x_array/...
+```
+
+Untuk mempersiapkan data untuk melatih model, kita menerapkan one-hot encoding ke target variabel (`train_y`) menggunakan fungsi `to_categorical()` dari `Keras` dan simpan sebagai obyek `train_y.keras`.
+
+```{r}
+train_y.keras <- ...
+```
+
+# 2 Membuat Model Neural Network
+
+Sebelum kita aplikasikan neural network ke dataset fashionmnist, kita harus periksa pengetahuan mengenai neural network dengan menjawab pertanyaan-pertanyaan di bawah ini:
+
+___
+2. Pernyataan di bawah adalah benar mengenai Neural Networks, **KECUALI**
+  - [ ] Input layer is the first layer in Neural Network, the number of neurons depends on the predictor variable on the data
+  - [ ] The initial weight  for each neuron is defined randomly
+  - [ ] Activation functions are not doing any transformation to its previous layer
+  - [ ] The neural network is called deep learning when it has more than one hidden layer
+___
+
+___
+3. Model neural network dibangun untuk mengoptimalkan (meminimalkan) error, error jenis apa dalah kasus regresi yang kita minimalkan?
+  - [ ] Binary Crossentropy
+  - [ ] Mean Absolute Error
+  - [ ] Neuron weight
+___
+
+## 2.1 Membuat sebuah model dasar menggunakan `keras_model_sequential()`
+
+Untuk mengatur layer, kita harus membuat model dasar, yaitu model Sequential. Panggil fungsi `keras_model_sequential()`, dan *pipe* model dasar dengan arsitektur model.
+
+## 2.2 Membangun Arsitektur (menentukan layer, neuron, dan fungsi aktivasi)
+
+Untuk mendefinisi arsitektur tiap layer, kita akan membuat beberapa model dengan mengatur beberapa parameter. Sebelum membangun arsitekturnya, kita atur initializer untuk memastikan hasil yang kita dapat tidak akan berubah.
+
+```{r}
+set.seed(100)
+initializer <- initializer_random_normal(seed = 100)
+```
+
+Pertama, buat model (simpan dalam `model_init`) dengan mendefinisikan parameter-parameter di bawah ini:
+- layer pertama berisi 32 nodes, fungsi aktivasi relu, 784 input shape
+- layer kedua berisi 32 nodes, fungsi aktivasi relu
+- layer ketiga berisi 32 nodes, fungsi aktivasi softmax
+
+```{r}
+model_init <- keras_model_sequential() %>% 
+  layer_dense(units = ..., activation = "...", input_shape = c(...),
+              kernel_initializer = initializer, bias_initializer = initializer) %>% 
+  layer_dense(units = ..., activation = "...",
+              kernel_initializer = initializer, bias_initializer = initializer) %>% 
+  layer_dense(units = ..., activation = "...", 
+              kernel_initializer = initializer, bias_initializer = initializer)
+```
+
+Second, create a model (stored it under `model_bigger`) by defining the following parameters:
+- the first layer contains 512 nodes, relu activation function, 784 input shape
+- the second layer contains 512 nodes, relu activation function
+- the third layer contains 10 nodes, softmax activation function
+
+Kedua, buatlah sebuah model (simpan ke dalam `model_bigger`) dengan mendefinisikan parameter di bawah ini:
+- layer pertama berisi 512 node, fungsi aktivasi relu, 784 input shape
+- layer kedua berisi 512 node, fungsi aktivasi relu
+- layer ketiga berisi 10 node, fungsi aktivasi softmax
+
+```{r}
+model_bigger <- keras_model_sequential() %>% 
+  layer_dense(units = ..., activation = "...", input_shape = c(...),
+              kernel_initializer = initializer, bias_initializer = initializer) %>% 
+  layer_dense(units = ..., activation = "...",
+              kernel_initializer = initializer, bias_initializer = initializer) %>% 
+  layer_dense(units = ..., activation = "...", 
+              kernel_initializer = initializer, bias_initializer = initializer)
+```
+
+Silahkan jawab pertanyaan di bawah ini
+___
+4. Dalam membangun model arsitektur, kita atur beberapa unit parameter. Di bawah ini merupakan pertimbangan menggunakan angka-angka tersebut, **KECUALI** 
+  - [ ] In the first layer, we use 784 input shape based on the number of our predictors
+  - [ ] In the hidden and output layer, we use any even number
+  - [ ] In the output layer, we use 10 that is the number of our categories
+___
+
+## 2.3 Membangun arsitektur (mendefinisi *cost function* dan *optimizer*)
+
+We still need to do several settings before training the `model_init` and `model_bigger`. We must compile the model by defining the loss function, optimizer type, and evaluation metrics. Please compile the model by setting these parameters:
+- categorical crossentropy as the loss function
+- adam as the optimizer with learning rate of 0.001
+- use accuracy as the evaluation metric
+
+Kita masih perlu melakukan beberapa pengaturan sebelum melatih `model_init` dan` model_bigger`. Kita harus menyusun model dengan mendefinisikan *loss function*, jenis *optimizer*, dan metrik evaluasi. Harap *compile* model dengan menyetel parameter berikut:
+- categorical crossentropy sebagai loss function
+- adam sebagai pengoptimal dengan learning rate 0.001
+- gunakan *accuracy* sebagai metrik evaluasi
+
+```{r}
+model_init %>% 
+  compile(loss = "...", 
+          optimizer = ...(lr = ...), 
+          metrics = "...")
+```
+
+```{r}
+model_bigger %>% 
+  compile(loss = "...", 
+          optimizer = ...(lr = ...), 
+          metrics = "...")
+```
+
+## 2.4 *Fitting model* di data train (mendefinisi epoch dan ukuran batch)
+
+Pada tahap ini, kita fit model menggunakan `epoch = 10` dan `batch_size = 100` untuk `model_init` dan `model_bigger`. Silahkan simpan model ke dalam obyek `history_init` dan `history_bigger`.
+
+```{r}
+history_init <- model_init %>%
+  fit(train_x.keras, train_y.keras, epoch = ..., batch_size = ...)
+```
+
+```{r}
+history_bigger <- model_bigger %>% 
+  fit(train_x.keras, train_y.keras, epoch = ..., batch_size = ...)
+```
+
+___
+5. Dalam fitting model di atas, kita atur `epochs = 10`, artinya ...
+  - [ ] The model does the feed-forward - back-propagation for all batch 10 times
+  - [ ] The model does the weighting for all batch 10 times
+  - [ ] The model divides the batch 10 times
+___
+
+# 3 Prediksi ke data test
+
+Untuk mengevaluasi performa model terhadap data yang belum dilihat, kita akan memprediksi data test (`test_x.keras`) menggunakan model yang sudah dilatih. Silahkan prediksi menggunakan fungsi `predict_classes()` dari package `Keras` dan simpan sebagai` pred_init` dan `pred_bigger`.
+
+```{r}
+pred_init <- keras::predict_classes(object = ..., x= ...)
+
+pred_bigger <- keras::predict_classes(object = ..., x= ...)
+```
+
+# 4 Evaluasi model neural network
+
+Karena label masih bertipe dbl, maka silahkan decode label tersebut berdasarkan kategorinya.
+
+```{r}
+decode <- function(data){
+  sapply(as.character(data), switch,
+       "0" = "T-Shirt",
+       "1" = "Trouser",
+       "2" = "Pullover",
+       "3" = "Dress",
+       "4" = "Coat",
+       "5" = "Sandal",
+       "6" = "Shirt",
+       "7" = "Sneaker",
+       "8" = "Bag",
+       "9" = "Boot")
+}
+```
+
+Dekode `pred_init` dan` pred_bigger` sebelum kita mengevaluasi performa model menggunakan confusion matrix. Anda juga perlu mendekode vektor `test_y` untuk mendapatkan label sebenarnya / true yang didekode dari variabel target.
+
+```{r}
+reference <- decode(test_y)
+pred_decode_in <- decode(...)
+pred_decode_big <- decode(...)
+```
+
+## 4.1 Confusion Matrix (klasifikasi)
+
+Setelah mendekode variabel target, selanjutnya Anda dapat mengevaluasi model menggunakan beberapa metrik, pada kuis ini, periksalah akurasi pada confusion matrix di bawah ini.
+
+Keterangan: jangan lupa untuk melakukan koersi eksplisit `as.factor`.
+
+```{r}
+library(caret)
+confusionMatrix(as.factor(...), as.factor(...))
+confusionMatrix(as.factor(...), as.factor(...))
+```
+
+___  
+6. Dari dua confusion matrix, apa yang dapat kita simpulkan?
+  - [ ] The more the neuron, the model tends to overfit
+  - [ ] The more the neuron, the model tends to underfit
+  - [ ] The number of neuron in the hidden layer does not relate with underfit or overfit
+___
+  
+# 4.2 Model Tuning
+
+Ternyata atasan kita ingin mendapatkan model terbaik, jadi dia meminta Anda untuk membandingkan satu model dengan model lainnya (simpan sebagai `model_tuning`). Sekarang, mari kita coba membangun `model_tuning` dengan menyesuaikannya saat compile model:
+- menggunakan sgd sebagai optimizer dengan leraning rate 0,001
+- sisanya sama dengan `model_init`
+
+```{r}
+model_tuning <- keras_model_sequential() %>% 
+  layer_dense(units = 32, activation = "relu", input_shape = c(784)) %>% 
+  layer_dense(units = 32, activation = "relu") %>% 
+  layer_dense(units = 10, activation = "softmax")
+
+model_tuning %>% 
+  compile(loss = "categorical_crossentropy", 
+          optimizer = ...(lr = 0.001), 
+          metrics = "...")
+
+history_tuning <- model_tuning %>%
+  fit(train_x.keras, train_y.keras, epochs = 10, batch_size = 100)
+```
+
+Setelah tuning model, silahkan prediksi `test_x.keras` menggunakan `model_tuning`.
+
+```{r}
+pred_tuning <- keras::predict_classes(object = ..., x= ...)
+```
+
+Kemudian, dekode `pred_tuning` dan periksa performa model menggunakan `confusionMatrix()`.
+
+```{r}
+pred_decode_tun <- decode(...)
+confusionMatrix(as.factor(...), as.factor(...))
+```
+
+Silahkan jawab pertanyaan di bawah ini.
+___
+7. Optimizer digunakan untuk mengupdate bobot untuk meminimalkan loss function. Apa yang dapat kamu simpulkan dari model_init dan model_tuning mengenai optimizer?
+  - [ ] Optimizer Adam is more powerful than Sgd
+  - [ ] Optimizer Sgd is more powerful than Adam
+  - [ ] Both of the optimizers do not influence the model performance
+___
+
+___
+8. Dari dua model di atas (`model_init` dan `model_tuning`), model mana yang terbaik untuk kita pilih?
+  - [ ] model_tuning, because the model has higher and more balanced accuracy between train and test
+  - [ ] model_init, because the model has higher and more balanced accuracy between train and test
+  - [ ] model_init, because the model has higher recall than model_tuning
+___
