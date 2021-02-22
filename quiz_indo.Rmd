@@ -148,7 +148,7 @@ initializer <- initializer_random_normal(seed = 100)
 Pertama, buat model (simpan dalam `model_init`) dengan mendefinisikan parameter-parameter di bawah ini:
 - layer pertama berisi 32 nodes, fungsi aktivasi relu, 784 input shape
 - layer kedua berisi 32 nodes, fungsi aktivasi relu
-- layer ketiga berisi 32 nodes, fungsi aktivasi softmax
+- layer ketiga berisi 10 nodes, fungsi aktivasi softmax
 
 ```{r}
 model_init <- keras_model_sequential() %>% 
@@ -159,11 +159,6 @@ model_init <- keras_model_sequential() %>%
   layer_dense(units = ..., activation = "...", 
               kernel_initializer = initializer, bias_initializer = initializer)
 ```
-
-Second, create a model (stored it under `model_bigger`) by defining the following parameters:
-- the first layer contains 512 nodes, relu activation function, 784 input shape
-- the second layer contains 512 nodes, relu activation function
-- the third layer contains 10 nodes, softmax activation function
 
 Kedua, buatlah sebuah model (simpan ke dalam `model_bigger`) dengan mendefinisikan parameter di bawah ini:
 - layer pertama berisi 512 node, fungsi aktivasi relu, 784 input shape
@@ -189,11 +184,6 @@ ___
 ___
 
 ## 2.3 Membangun arsitektur (mendefinisi *cost function* dan *optimizer*)
-
-We still need to do several settings before training the `model_init` and `model_bigger`. We must compile the model by defining the loss function, optimizer type, and evaluation metrics. Please compile the model by setting these parameters:
-- categorical crossentropy as the loss function
-- adam as the optimizer with learning rate of 0.001
-- use accuracy as the evaluation metric
 
 Kita masih perlu melakukan beberapa pengaturan sebelum melatih `model_init` dan` model_bigger`. Kita harus menyusun model dengan mendefinisikan *loss function*, jenis *optimizer*, dan metrik evaluasi. Harap *compile* model dengan menyetel parameter berikut:
 - categorical crossentropy sebagai loss function
