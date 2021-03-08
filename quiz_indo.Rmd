@@ -1,5 +1,5 @@
 ---
-title: "Kuis CIML II"
+title: "Kuis Neural Network"
 author: "Team Algoritma"
 date: "6/6/2020"
 output: html_document
@@ -11,13 +11,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Kuis Neural Network
 
-Kuis ini merupakan bagian dari proses penilaian *Algoritma Academy*. Selamat anda sudah menyelesaikan materi *Neural Network*! Kami akan melakukan penilaian berupa kuis untuk menguji materi yang sudah dipelajari. Pengerjaan Kuis diharapkan dapat dilakukan di dalam kelas, silakan hubungi tim instruktur kami jika Anda melewatkan kesempatan untuk mengambilnya di kelas.
+Kuis ini merupakan bagian dari proses penilaian *Algoritma Academy*. Selamat Anda telah menyelesaikan materi *Neural Network*! Kami akan melakukan penilaian berupa kuis untuk menguji materi yang sudah dipelajari. Pengerjaan Kuis diharapkan dapat dilakukan di dalam kelas, silakan hubungi tim instruktur kami jika Anda melewatkan kesempatan untuk mengambilnya di kelas.
 
-Untuk menyelesaikan kuis ini, anda perlu untuk membuat model klasifikasi untuk mengklafisikasikan kategori dari gambar produk fashion menggunakan algoritma Neural Network menggunakan framework `Keras` dengan langkah - langkah berikut:
+Untuk menyelesaikan kuis ini, Anda perlu untuk membuat model klasifikasi untuk mengklafisikasikan kategori dari gambar produk fashion menggunakan algoritma Neural Network menggunakan framework `Keras` dengan langkah-langkah berikut:
 
 # 1. Persiapan Data
 
-Mari kita mulai pengalaman penerapan neural network kita dengan menyiapkan dataset sebagai langkah pertama.  Anda akan menggunakan `fashionmnist` dataset. Data disimpan dalam format csv file di dalam `fashionmnist` folder dari materi kursus dan terdiri dari train and test set dari 10 kategori yang berbeda untuk gambar produk fasion ukuran 28 x 28 pixel. Gunakan daftar istilah berikut untuk melabelkan target anda:
+Mari kita mulai pengalaman penerapan neural network kita dengan menyiapkan dataset sebagai langkah pertama. Anda akan menggunakan `fashionmnist` dataset. Data disimpan dengan format CSV di dalam folder (zip) `fashionmnist` di dalam materi kursus. Data terdiri dari satu set train dan test yang menyimpan gambar produk fashion berukuran 28 x 28 pixel untuk 10 kategori yang berbeda. Gunakan daftar istilah berikut untuk melabelkan target Anda:
 
 ```{r}
 categories <- c("T-shirt", "Trouser", "Pullover", "Dress", 
@@ -26,7 +26,7 @@ categories <- c("T-shirt", "Trouser", "Pullover", "Dress",
 
 ## 1.1 Muat library dan data
 
-Silakan muat package berikut.
+Silakan muat package berikut:
 
 ```{r}
 library(readr)
@@ -42,19 +42,17 @@ fashion_train <- read_csv(...)
 fashion_test <- read_csv(...)
 ```
 
-Periksa `fashion_train` data dengan menggunakan function `head()`.
+Periksa `fashion_train` data dengan menggunakan `head()`.
 
 ```{r}
 # your code here
 ```
 
-`fashion_train` data terdiri dari 60000 observations dan 785 variabel (1 target and 784 prediktor). Setiap prediktor merepresentasikan pixel dari gambar.
+`fashion_train` terdiri dari 60000 observasi dan 785 variabel (1 target and 784 prediktor). Setiap prediktor merepresentasikan pixel dari gambar.
 
 ## 1.2 Konversi data ke dalam matriks
 
-The data contains the value of pixels stored in **data.frame**. However, we have to convert the data into the matrix before we create a model, hence, please convert the data to be matrix format using `data.matrix()` function and store the `fashion_train` matrix as `train_m` and `fashion_test` matrix as `test_m`.
-
-Data berisi nilai pixel yang disimpan dalam data frame. Namun, kita harus mengkonversi data menjadi matriks sebelum kita membuat sebuah model, sehingga, silahkan konversi data menjadi format matrix menggunakan fungsi `data.matrix()`
+Data berisi nilai pixel yang disimpan dalam data frame. Namun, kita harus mengkonversi data menjadi matriks sebelum kita membuat sebuah model. Silahkan konversi data menjadi format matrix menggunakan fungsi `data.matrix()` dan simpan hasil konversi `fashion_train` sebagai `train_m` sedangkan `fashion_test` sebagai `test_m`.
 
 ```{r}
 train_m <- data.matrix(...)
@@ -63,7 +61,7 @@ test_m <- data.matrix(...)
 
 ## 1.3 Cross Validation
 
-Setelah itu, kita harus memisahkan prediktor dan target di data `train_m` dan `test_m`
+Setelah itu, kita harus memisahkan prediktor dan target untuk data `train_m` dan `test_m`.
 
 ```{r}
 # Predictor variables in `train_m`
@@ -82,7 +80,7 @@ test_y <- ...
 
 ## 1.4 Persiapkan training dan testing (ubah menjadi array)
 
-Selanjutnya, kita harus mengkonversi prediktor matriks ke dalam bentuk array. Silahkan gunakan `array_reshape(data, dim(data))` untuk mengkonversi data.
+Selanjutnya, kita harus mengkonversi matriks prediktor ke dalam bentuk array. Silahkan gunakan `array_reshape(data, dim(data))` untuk mengkonversi data.
 
 ```{r}
 train_x_array <- array_reshape(..., dim(...))
@@ -94,10 +92,15 @@ test_x_array <- array_reshape(..., dim(...))
 Persiapan selanjutnya sebelum data siap untuk dimodelkan adalah feature scaling. Silahkan jawab pertanyaan di bawah ini terlebih dahulu.
 
 ___
-1. Setelah data dibentuk ulang ke dalam array, kamu harus melanjutkan praproses sebelum melatih network. Jika kamu inspeksi sembarang gambar di dalam training, kamu akan melihat bahwa nilai pixel jatuh dalam range 0 sampai 255. Kemudian, apa yang dilakukan array dengan membaginya dengan 255?
-  - [ ] Convert the array between 0 to 255 into 0 to 1
-  - [ ] Reshape the width and height into a single dimension since the data is a 3-d array (images, width, height)
-  - [ ] Normalize the array between 0 to 255 into -1 to 1
+1. Setelah data ubah ke bentuk array, masih ada satu tahapan pra-proses data yang perlu dilakukan. Jika kita inspeksi suatu gambar di dalam data train, kita akan melihat bahwa nilai pixel jatuh dalam rentang 0 sampai 255. Kemudian, apakah tujuan dari membagi nilai pada array tersebut dengan 225?
+  - [ ] Mengkonversi rentang nilai yang sebelumnya 0 hingga 255 menjadi 0 hingga 1
+  - [ ] Mengubah ukuran lebar (*width*) dan tinggi (*height*) gambar menjadi 1 dimensi, karena data merupakan 3D array (*images*, *width*, *height*)
+  - [ ] Menormalisasi nilai yang sebelumnya 0 hingga 255 menjadi -1 hingga 1
+
+*Referensi Opsi Bahasa Inggris:*
+  - [ ] Convert the array value from 0 to 255 into 0 to 1
+  - [ ] Reshape the width and height into single dimension since the data is a 3-d array (images, width, height)
+  - [ ] Normalize the array from 0 to 255 into -1 to 1
 ___
 
 Tahap selanjutnya adalah menskalakan nilai array (`train_x_array` dan `test_x_array`) dengan membaginya dengan 255.
@@ -107,7 +110,7 @@ train_x.keras <- train_x_array/...
 test_x.keras <- test_x_array/...
 ```
 
-Untuk mempersiapkan data untuk melatih model, kita menerapkan one-hot encoding ke target variabel (`train_y`) menggunakan fungsi `to_categorical()` dari `Keras` dan simpan sebagai obyek `train_y.keras`.
+Kita juga perlu menerapkan *one-hot encoding* ke target variabel (`train_y`) menggunakan fungsi `to_categorical()` dari `Keras` dan disimpan sebagai objek `train_y.keras`.
 
 ```{r}
 train_y.keras <- ...
@@ -115,18 +118,24 @@ train_y.keras <- ...
 
 # 2 Membuat Model Neural Network
 
-Sebelum kita aplikasikan neural network ke dataset fashionmnist, kita harus periksa pengetahuan mengenai neural network dengan menjawab pertanyaan-pertanyaan di bawah ini:
+Sebelum kita aplikasikan neural network ke dataset fashionmnist, mari kita periksa pemahaman kita terkait neural network dengan menjawab pertanyaan-pertanyaan di bawah ini:
 
 ___
 2. Pernyataan di bawah adalah benar mengenai Neural Networks, **KECUALI**
+  - [ ] Input layer adalah layer pertama dari Neural Network, jumlah neuronnya berdasarkan jumlah prediktor
+  - [ ] Bobot awal untuk tiap neuron ditentukan secara acak
+  - [ ] *Activation functions* tidak melakukan transformasi data
+  - [ ] Neural network disebut sebagai deep learning bila memiliki lebih dari 1 hidden layer.
+
+*Referensi Opsi Bahasa Inggris:*
   - [ ] Input layer is the first layer in Neural Network, the number of neurons depends on the predictor variable on the data
   - [ ] The initial weight  for each neuron is defined randomly
-  - [ ] Activation functions are not doing any transformation to its previous layer
+  - [ ] Activation functions are not doing any transformation to the data
   - [ ] The neural network is called deep learning when it has more than one hidden layer
 ___
 
 ___
-3. Model neural network dibangun untuk mengoptimalkan (meminimalkan) error, error jenis apa dalah kasus regresi yang kita minimalkan?
+3. Model neural network dibangun untuk mengoptimalkan (meminimalkan) error, error jenis apa pada kasus regresi yang kita minimalkan?
   - [ ] Binary Crossentropy
   - [ ] Mean Absolute Error
   - [ ] Neuron weight
@@ -134,13 +143,14 @@ ___
 
 ## 2.1 Membuat sebuah model dasar menggunakan `keras_model_sequential()`
 
-Untuk mengatur layer, kita harus membuat model dasar, yaitu model Sequential. Panggil fungsi `keras_model_sequential()`, dan *pipe* model dasar dengan arsitektur model.
+Untuk mengatur layer, kita harus membuat model dasar, yaitu model Sequential. Panggil fungsi `keras_model_sequential()`, dan gunakan operator *pipe* untuk membangun arsitektur model dari model dasar yang ada.
 
 ## 2.2 Membangun Arsitektur (menentukan layer, neuron, dan fungsi aktivasi)
 
-Untuk mendefinisi arsitektur tiap layer, kita akan membuat beberapa model dengan mengatur beberapa parameter. Sebelum membangun arsitekturnya, kita atur initializer untuk memastikan hasil yang kita dapat tidak akan berubah.
+Untuk membangun arsitektur tiap layer, kita akan membuat beberapa model dengan mengatur beberapa parameter. Sebelum membangun arsitekturnya, kita atur initializer untuk memastikan hasil yang kita dapat tidak akan berubah.
 
 ```{r}
+RNGkind(sample.kind = "Rounding")
 set.seed(100)
 initializer <- initializer_random_normal(seed = 100)
 ```
@@ -175,9 +185,14 @@ model_bigger <- keras_model_sequential() %>%
               kernel_initializer = initializer, bias_initializer = initializer)
 ```
 
-Silahkan jawab pertanyaan di bawah ini
+Silahkan jawab pertanyaan di bawah ini.
 ___
 4. Dalam membangun model arsitektur, kita atur beberapa unit parameter. Di bawah ini merupakan pertimbangan menggunakan angka-angka tersebut, **KECUALI** 
+  - [ ] Pada layer pertama, digunakan input shape 784 sesuai jumlah prediktor 
+  - [ ] Pada hidden dan output layer, digunakan sembarang angka genap
+  - [ ] Pada output layer, digunakan angka 10 yang merupakan jumlah kategori data
+
+*Referensi Opsi Bahasa Inggris:*
   - [ ] In the first layer, we use 784 input shape based on the number of our predictors
   - [ ] In the hidden and output layer, we use any even number
   - [ ] In the output layer, we use 10 that is the number of our categories
@@ -185,9 +200,9 @@ ___
 
 ## 2.3 Membangun arsitektur (mendefinisi *cost function* dan *optimizer*)
 
-Kita masih perlu melakukan beberapa pengaturan sebelum melatih `model_init` dan` model_bigger`. Kita harus menyusun model dengan mendefinisikan *loss function*, jenis *optimizer*, dan metrik evaluasi. Harap *compile* model dengan menyetel parameter berikut:
+Kita masih perlu melakukan beberapa pengaturan sebelum melatih `model_init` dan` model_bigger`. Kita harus menyusun model dengan mendefinisikan *loss function*, jenis *optimizer*, dan metrik evaluasi. Harap *compile* model dengan mengatur parameter berikut:
 - categorical crossentropy sebagai loss function
-- adam sebagai pengoptimal dengan learning rate 0.001
+- adam sebagai optimizer dengan learning rate 0.001
 - gunakan *accuracy* sebagai metrik evaluasi
 
 ```{r}
@@ -204,9 +219,9 @@ model_bigger %>%
           metrics = "...")
 ```
 
-## 2.4 *Fitting model* di data train (mendefinisi epoch dan ukuran batch)
+## 2.4 *Fitting model* di data train (mengatur epoch dan ukuran batch)
 
-Pada tahap ini, kita fit model menggunakan `epoch = 10` dan `batch_size = 100` untuk `model_init` dan `model_bigger`. Silahkan simpan model ke dalam obyek `history_init` dan `history_bigger`.
+Pada tahap ini, kita fit model menggunakan `epoch = 10` dan `batch_size = 100` untuk `model_init` dan `model_bigger`. Silahkan simpan hasil fit model ke dalam obyek `history_init` dan `history_bigger`.
 
 ```{r}
 history_init <- model_init %>%
@@ -219,15 +234,20 @@ history_bigger <- model_bigger %>%
 ```
 
 ___
-5. Dalam fitting model di atas, kita atur `epochs = 10`, artinya ...
+5. Dalam fitting model di atas, kita atur `epoch = 10`, artinya ...
+  - [ ] Model melakukan proses feed-forward - back propagation untuk seluruh batch sebanyak 10 kali
+  - [ ] Model melakukan proses feed-forward - back propagation untuk 10 batch sebanyak 1 kali
+  - [ ] Model membagi 1 batch menjadi 10 kelompok training data
+
+*Referensi Opsi Bahasa Inggris:*
   - [ ] The model does the feed-forward - back-propagation for all batch 10 times
-  - [ ] The model does the weighting for all batch 10 times
-  - [ ] The model divides the batch 10 times
+  - [ ] The model does the feed-forward - back-propagation for 10 batch 1 times
+  - [ ] The model divides one batch into 10 groups of training data
 ___
 
 # 3 Prediksi ke data test
 
-Untuk mengevaluasi performa model terhadap data yang belum dilihat, kita akan memprediksi data test (`test_x.keras`) menggunakan model yang sudah dilatih. Silahkan prediksi menggunakan fungsi `predict_classes()` dari package `Keras` dan simpan sebagai` pred_init` dan `pred_bigger`.
+Untuk mengevaluasi performa model terhadap data yang belum dilihat, kita akan memprediksi data test (`test_x.keras`) menggunakan model yang sudah dilatih. Silahkan prediksi menggunakan fungsi `predict_classes()` dari package `Keras` dan simpan sebagai `pred_init` dan `pred_bigger`.
 
 ```{r}
 pred_init <- keras::predict_classes(object = ..., x= ...)
@@ -237,7 +257,7 @@ pred_bigger <- keras::predict_classes(object = ..., x= ...)
 
 # 4 Evaluasi model neural network
 
-Karena label masih bertipe dbl, maka silahkan decode label tersebut berdasarkan kategorinya.
+Karena label masih bertipe dbl, maka silahkan decode label tersebut berdasarkan kategorinya. Jalankan code berikut untuk membuat fungsi `decode()`
 
 ```{r}
 decode <- function(data){
@@ -255,7 +275,7 @@ decode <- function(data){
 }
 ```
 
-Dekode `pred_init` dan` pred_bigger` sebelum kita mengevaluasi performa model menggunakan confusion matrix. Anda juga perlu mendekode vektor `test_y` untuk mendapatkan label sebenarnya / true yang didekode dari variabel target.
+*Decode* `pred_init` dan `pred_bigger` sebelum kita mengevaluasi performa model menggunakan confusion matrix. Anda juga perlu *decode* `test_y` untuk mendapatkan label sebenarnya dari variabel target.
 
 ```{r}
 reference <- decode(test_y)
@@ -265,9 +285,9 @@ pred_decode_big <- decode(...)
 
 ## 4.1 Confusion Matrix (klasifikasi)
 
-Setelah mendekode variabel target, selanjutnya Anda dapat mengevaluasi model menggunakan beberapa metrik, pada kuis ini, periksalah akurasi pada confusion matrix di bawah ini.
+Setelah melakukan *decode* variabel target, selanjutnya Anda dapat mengevaluasi model menggunakan beberapa *metrics*. Pada kuis ini, periksalah akurasi pada confusion matrix di bawah ini.
 
-Keterangan: jangan lupa untuk melakukan koersi eksplisit `as.factor`.
+Note: jangan lupa untuk melakukan *explicit coercion* `as.factor` bila data Anda belum dalam bentuk faktor
 
 ```{r}
 library(caret)
@@ -276,31 +296,39 @@ confusionMatrix(as.factor(...), as.factor(...))
 ```
 
 ___  
-6. Dari dua confusion matrix, apa yang dapat kita simpulkan?
-  - [ ] The more the neuron, the model tends to overfit
-  - [ ] The more the neuron, the model tends to underfit
-  - [ ] The number of neuron in the hidden layer does not relate with underfit or overfit
+6. Dari dua confusion matrix di atas, pernyataan di bawah yang paling sesuai adalah?
+  - [ ] Semakin banyak neuron, performa model dapat meningkat karena semakin banyak features yang dapat diekstraksi dari data
+  - [ ] Semakin sedikit neuron, performa model dapat meningkat karena semakin sedikit features tidak penting yang diekstraksi dari data
+  - [ ] Jumlah neuron pada hidden layer tidak mempengaruhi performa model
+
+*Referensi Opsi Bahasa Inggris:*
+  - [ ] The more the neuron, the model may have better performance because more features will be extracted from the data
+  - [ ] The less the neuron, the model may have better performance because less unnecessary features will be extracted from the data
+  - [ ] The number of neuron in the hidden layer does not relate with the model performance
 ___
   
 # 4.2 Model Tuning
 
-Ternyata atasan kita ingin mendapatkan model terbaik, jadi dia meminta Anda untuk membandingkan satu model dengan model lainnya (simpan sebagai `model_tuning`). Sekarang, mari kita coba membangun `model_tuning` dengan menyesuaikannya saat compile model:
-- menggunakan sgd sebagai optimizer dengan leraning rate 0,001
-- sisanya sama dengan `model_init`
+Ternyata atasan kita ingin mendapatkan model terbaik, jadi dia meminta Anda untuk membuat satu model lagi sebagai pembanding (simpan sebagai `model_tuning`). Sekarang, mari kita coba membangun `model_tuning` dengan mengatur parameter sebagai berikut:
+- menggunakan sgd sebagai optimizer dengan learning rate 0,001
+- parameter lainnya sama dengan `model_init`
 
 ```{r}
 model_tuning <- keras_model_sequential() %>% 
-  layer_dense(units = 32, activation = "relu", input_shape = c(784)) %>% 
-  layer_dense(units = 32, activation = "relu") %>% 
-  layer_dense(units = 10, activation = "softmax")
+  layer_dense(units = ..., activation = "...", input_shape = c(...),
+              kernel_initializer = initializer, bias_initializer = initializer) %>% 
+  layer_dense(units = ..., activation = "...",
+              kernel_initializer = initializer, bias_initializer = initializer) %>% 
+  layer_dense(units = ..., activation = "...", 
+              kernel_initializer = initializer, bias_initializer = initializer)
 
 model_tuning %>% 
-  compile(loss = "categorical_crossentropy", 
-          optimizer = ...(lr = 0.001), 
+  compile(loss = "...", 
+          optimizer = ...(lr = ...), 
           metrics = "...")
 
 history_tuning <- model_tuning %>%
-  fit(train_x.keras, train_y.keras, epochs = 10, batch_size = 100)
+  fit(train_x.keras, train_y.keras, epoch = 10, batch_size = 100)
 ```
 
 Setelah tuning model, silahkan prediksi `test_x.keras` menggunakan `model_tuning`.
@@ -309,7 +337,7 @@ Setelah tuning model, silahkan prediksi `test_x.keras` menggunakan `model_tuning
 pred_tuning <- keras::predict_classes(object = ..., x= ...)
 ```
 
-Kemudian, dekode `pred_tuning` dan periksa performa model menggunakan `confusionMatrix()`.
+Kemudian, *decode* `pred_tuning` dan periksa performa model menggunakan `confusionMatrix()`.
 
 ```{r}
 pred_decode_tun <- decode(...)
@@ -318,15 +346,27 @@ confusionMatrix(as.factor(...), as.factor(...))
 
 Silahkan jawab pertanyaan di bawah ini.
 ___
-7. Optimizer digunakan untuk mengupdate bobot untuk meminimalkan loss function. Apa yang dapat kamu simpulkan dari model_init dan model_tuning mengenai optimizer?
+7. Optimizer digunakan untuk meng-*update* bobot sehingga meminimalkan loss function. Apa yang dapat Anda simpulkan dari `model_init` dan `model_tuning` mengenai optimizer?
+  - [ ] Optimizer Adam lebih baik dibandingkan Sgd
+  - [ ] Optimizer Sgd lebih baik dibandingkan Adam
+  - [ ] Kedua tipe optimizer tidak mempengaruhi performa model
+
+*Referensi Opsi Bahasa Inggris:*
   - [ ] Optimizer Adam is more powerful than Sgd
   - [ ] Optimizer Sgd is more powerful than Adam
   - [ ] Both of the optimizers do not influence the model performance
 ___
 
 ___
-8. Dari dua model di atas (`model_init` dan `model_tuning`), model mana yang terbaik untuk kita pilih?
-  - [ ] model_tuning, because the model has higher and more balanced accuracy between train and test
-  - [ ] model_init, because the model has higher and more balanced accuracy between train and test
-  - [ ] model_init, because the model has higher recall than model_tuning
+8. Dari 3 model yang telah dibuat (`model_init`, `model_bigger` dan `model_tuning`), model mana yang terbaik untuk kita pilih?
+  - [ ] model_tuning, karena performanya lebih tinggi dan akurasinya seimbang antara data train dan data test
+  - [ ] model_init, karena performanya lebih tinggi dan akurasinya seimbang antara data train dan data test
+  - [ ] model_bigger, karena performanya lebih tinggi dan akurasinya seimbang antara data train dan data test
+
+*Referensi Opsi Bahasa Inggris:*
+  - [ ] model_tuning, because the model has higher performance and balanced accuracy between train and test
+  - [ ] model_init, because the model has higher performance and balanced accuracy between train and test
+  - [ ] model_bigger, because the model has higher performance and balanced accuracy between train and test
+  
+*Note: untuk studi kasus ini, kita menganggap perbedaan poin akurasi 0.1 poin masih ditoleransi (cukup seimbang)*
 ___
